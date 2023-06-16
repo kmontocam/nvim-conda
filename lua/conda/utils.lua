@@ -44,7 +44,7 @@ function utils.get_conda_environments()
 	return conda_envs
 end
 
---TODO: add shell commands to remaining activators, currently only posix shells are supported
+--TODO: add shell commands to remaining activators
 ---@param subcommand string, modify conda function
 ---@param env_name string | nil, name of an existing conda environment
 ---@return string? # command to run on user's terminal so conda
@@ -75,7 +75,14 @@ function utils.get_activator_command(subcommand, env_name)
 		xonsh = "...",
 		cmd_exe = "...",
 		fish = "...",
-		powershell = "...",
+		powershell = {
+			activate = (
+				"conda shell.powershell activate "
+				.. env_name
+				.. " | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }"
+			),
+			deactivate = "conda shell.powershell deactivate | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }",
+		},
 	}
 
 	local found, activator = find.has_value(utils.activator_shells, utils.running_shell)
