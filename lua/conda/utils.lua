@@ -94,11 +94,17 @@ function utils.get_activator_command(subcommand, env_name)
 		fish = "...",
 		powershell = {
 			activate = (
-				"conda shell.powershell activate "
+				"conda shell."
+				.. utils.running_shell
+				.. " activate "
 				.. env_name
 				.. " | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }"
 			),
-			deactivate = "conda shell.powershell deactivate | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }",
+			deactivate = (
+				"conda shell."
+				.. utils.running_shell
+				.. " deactivate | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }"
+			),
 		},
 	}
 
