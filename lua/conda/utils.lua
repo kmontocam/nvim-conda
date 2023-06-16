@@ -89,7 +89,16 @@ function utils.get_activator_command(subcommand, env_name)
 				.. " -e 's/unsetenv \\([^=]*\\);/unlet \\$\\1/g'"
 			),
 		},
-		xonsh = "...",
+		xonsh = {
+			activate = ("conda shell." .. utils.running_shell .. " activate " .. env_name .. " | sed -e 's/^/let /g'"),
+			deactivate = (
+				"conda shell."
+				.. utils.running_shell
+				.. " deactivate "
+				.. "| sed -e 's/del/unlet/g"
+				.. " -e 's/\\([^=]*\\) = \\(.*\\)/let \\\\1=\\\\2/g')"
+			),
+		},
 		cmd_exe = "...",
 		fish = "...",
 		powershell = {
