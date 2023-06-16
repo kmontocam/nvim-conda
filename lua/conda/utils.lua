@@ -71,7 +71,24 @@ function utils.get_activator_command(subcommand, env_name)
 				.. " -e 's/unset \\([^=]*\\)/unlet \\$\\1/g'"
 			),
 		},
-		csh = "...",
+		csh = {
+			activate = (
+				"conda shell."
+				.. utils.running_shell
+				.. " activate "
+				.. env_name
+				.. " | sed -e 's/setenv \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
+				.. " -e 's/set \\([^=]*\\)=\\(.*\\);/let \\1=\\2/g'"
+			),
+			deactivate = (
+				"conda shell."
+				.. utils.running_shell
+				.. " deactivate "
+				.. " | sed -e 's/setenv \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
+				.. " -e 's/set \\([^=]*\\)=\\(.*\\);/let \\1=\\2/g'"
+				.. " -e 's/unsetenv \\([^=]*\\);/unlet \\$\\1/g'"
+			),
+		},
 		xonsh = "...",
 		cmd_exe = "...",
 		fish = "...",
