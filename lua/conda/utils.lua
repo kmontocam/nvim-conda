@@ -100,6 +100,9 @@ function utils.get_activator_command(subcommand, env_name)
 				.. " -e 's/\\\\([^=]*\\\\) = \\\\(.*\\\\)/let \\\\1 = \\\\2/g'"
 			),
 		},
+		-- for /f "delims=" %A in ('conda shell.cmd.exe activate') do @type "%A"
+		-- get cmd.exe commands to modify conda environments, pipe regex to make
+		-- them vim compatible
 		cmd_exe = "...",
 		fish = {
 			activate = (
