@@ -13,7 +13,7 @@ function M.has_value(tab, search_value)
 			return true, k
 		end
 	end
-	return false
+	return false, nil
 end
 
 ---@param matches table, table to store matches
