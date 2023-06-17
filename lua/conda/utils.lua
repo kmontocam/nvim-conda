@@ -96,8 +96,8 @@ function utils.get_activator_command(subcommand, env_name)
 				"conda shell."
 				.. utils.running_shell
 				.. " deactivate "
-				.. "| sed -e 's/del/unlet/g"
-				.. " -e 's/\\([^=]*\\) = \\(.*\\)/let \\\\1=\\\\2/g')"
+				.. "| sed -e 's/del/unlet/g'"
+				.. " -e 's/\\\\([^=]*\\\\) = \\\\(.*\\\\)/let \\\\1 = \\\\2/g'"
 			),
 		},
 		cmd_exe = "...",
