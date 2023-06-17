@@ -44,7 +44,8 @@ function utils.get_conda_environments()
 	return conda_envs
 end
 
---TODO: add shell commands to remaining activators
+--TODO: add shell command for cmd.exe, currently not supported because of
+--lack of regex in the shell.
 ---@param subcommand string, modify conda function
 ---@param env_name string | nil, name of an existing conda environment
 ---@return string? # command to run on user's terminal so conda
@@ -100,7 +101,24 @@ function utils.get_activator_command(subcommand, env_name)
 			),
 		},
 		cmd_exe = "...",
-		fish = "...",
+		fish = {
+			activate = (
+				"conda shell."
+				.. utils.running_shell
+				.. " activate "
+				.. env_name
+				.. " | sed -e 's/set -gx \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
+				.. [[ -e '/PATH=/ s/\\("[^=][\\s]*\\)"/:/g']]
+			),
+			deactivate = (
+				"conda shell."
+				.. utils.running_shell
+				.. " deactivate "
+				.. " | sed -e 's/set -gx \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
+				.. " -e 's/set -e \\([^[:space:]]*\\);/unlet \\$\\1/g'"
+				.. [[ -e '/PATH=/ s/\\("[^=][\\s]*\\)"/:/g']]
+			),
+		},
 		powershell = {
 			activate = (
 				"conda shell."
