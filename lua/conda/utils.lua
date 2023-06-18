@@ -47,11 +47,15 @@ end
 --TODO: add shell command for cmd.exe, currently not supported because of
 --lack of regex in the shell.
 ---@param subcommand string, modify conda function
----@param env_name string | nil, name of an existing conda environment
+---@param env_name string?, name of an existing conda environment. If nill,
+--subcommand activate will treat it as base.
 ---@return string? # command to run on user's terminal so conda
 --envrionment's can be modified inside neovim's shell.
 function utils.get_activator_command(subcommand, env_name)
 	utils.running_shell = vim.api.nvim_get_option("shell"):match("[^/\\]+$")
+	if env_name == nil then
+		env_name = ""
+	end
 
 	utils.activator_commands = {
 		posix = {
