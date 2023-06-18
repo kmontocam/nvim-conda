@@ -1,4 +1,5 @@
 local find = require("conda.functional.find")
+local Job = require("plenary.job")
 local utils = {}
 
 --retrieved from conda activate documentation
@@ -32,15 +33,20 @@ utils.activator_shells = {
 
 ---@return table
 function utils.get_conda_environments()
-	local handle = io.popen("conda env list --json")
-	if handle then
-		utils.conda_envs_path_json = handle:read("*a")
-		handle:close()
-	end
-	local conda_envs_path = vim.fn.json_decode(utils.conda_envs_path_json)
-	local matches = {}
-	local conda_envs = find.table_regex_match(matches, conda_envs_path, "[\\/]envs[\\/](.*)")
-	table.insert(conda_envs, "base")
+	local shell_output = {}
+	local conda_envs = {}
+	Job:new({
+		command = "conda",
+		args = { "env", "list" },
+		on_stdout = function(_, stdout)
+			table.insert(shell_output, stdout)
+		end,
+		on_exit = function()
+			local _conda_envs = find.table_regex_match({}, shell_output, "[\\/]envs[\\/](.*)")
+			table.move(_conda_envs, 1, #_conda_envs, #conda_envs + 1, conda_envs)
+			table.insert(conda_envs, "base")
+		end,
+	}):start()
 	return conda_envs
 end
 
