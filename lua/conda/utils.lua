@@ -149,14 +149,14 @@ function utils.get_activator_command(subcommand, env_name)
 				.. [[ activate ]]
 				.. env_name
 				.. [[ | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }]]
-				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
+				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}]]
 			),
 			deactivate = (
 				[[conda shell.]]
 				.. [[powershell]]
 				.. [[ deactivate]]
 				.. [[ | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }]]
-				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
+				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}]]
 			),
 		},
 	}
