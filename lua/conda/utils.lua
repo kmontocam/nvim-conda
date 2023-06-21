@@ -50,13 +50,11 @@ function utils.get_conda_environments()
 	return conda_envs
 end
 
---TODO: add shell command for cmd.exe, currently not supported because of
---lack of regex in the shell.
 ---@param subcommand string, modify conda function
 ---@param env_name string?, name of an existing conda environment. If nill,
 --subcommand activate will treat it as base.
 ---@return string? # command to run on user's terminal so conda
---envrionment's can be modified inside neovim's shell.
+--envrionments can be modified inside neovim's shell
 function utils.get_activator_command(subcommand, env_name)
 	utils.running_shell = vim.api.nvim_get_option("shell"):match("[^/\\]+$")
 	if env_name == nil then
@@ -110,10 +108,23 @@ function utils.get_activator_command(subcommand, env_name)
 				.. " -e 's/\\\\([^=]*\\\\) = \\\\(.*\\\\)/let \\\\1 = \\\\2/g'"
 			),
 		},
-		-- for /f "delims=" %A in ('conda shell.cmd.exe activate') do @type "%A"
-		-- get cmd.exe commands to modify conda environments, pipe regex to make
-		-- them vim compatible
-		cmd_exe = "...",
+		cmd_exe = {
+			activate = (
+				[[powershell -command "Get-Content -Path (Invoke-Expression -Command 'cmd.exe /c conda shell.]]
+				.. [[cmd.exe]]
+				.. [[ activate ]]
+				.. env_name
+				.. [[') | ForEach-Object {$_ -replace '^^@SET \"([^^=]+)=(.*)\"', 'let $$$1=\"$2\"'}]]
+				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
+			),
+			deactivate = (
+				[[powershell -command "Get-Content -Path (Invoke-Expression -Command 'cmd.exe /c conda shell.]]
+				.. [[cmd.exe]]
+				.. [[ deactivate')]]
+				.. [[ | ForEach-Object {$_ -replace '^^@SET \"([^^=]+)=(.*)\"', 'let $$$1=\"$2\"'}]]
+				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
+			),
+		},
 		fish = {
 			activate = (
 				"conda shell."
