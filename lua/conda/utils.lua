@@ -26,6 +26,7 @@ utils.activator_shells = {
 	},
 	powershell = {
 		"powershell",
+		"pwsh", -- if client is using powershell in Unix
 	},
 }
 
@@ -145,16 +146,19 @@ function utils.get_activator_command(subcommand, env_name)
 		},
 		powershell = {
 			activate = (
-				"conda shell."
-				.. utils.running_shell
-				.. " activate "
+				[[conda shell.]]
+				.. [[powershell]]
+				.. [[ activate ]]
 				.. env_name
-				.. " | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }"
+				.. [[ | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }]]
+				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
 			),
 			deactivate = (
-				"conda shell."
-				.. utils.running_shell
-				.. " deactivate | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }"
+				[[conda shell.]]
+				.. [[powershell]]
+				.. [[ deactivate ]]
+				.. [[ | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }]]
+				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
 			),
 		},
 	}
