@@ -1,5 +1,6 @@
 local utils = require("conda.utils")
 local set = require("conda.functional.set")
+local string_ = require("conda.functional.string")
 local envs = {}
 
 ---@param env_name string, name of an existing conda environment
@@ -17,7 +18,8 @@ function envs.activate(env_name, conda_envs)
 		print("The current shell is not supported by conda")
 		return nil
 	end
-	local vim_conda_activate_command = (vim.fn.system(activator_command))
+	local _vim_conda_activate_command = (vim.fn.system(activator_command))
+	local vim_conda_activate_command = string_.clean_vim_activator(_vim_conda_activate_command)
 	vim.cmd(vim_conda_activate_command)
 end
 
@@ -29,7 +31,8 @@ function envs.deactivate()
 		print("The current shell is not supported by conda")
 		return nil
 	end
-	local vim_conda_deactivate_command = (vim.fn.system(activator_command))
+	local _vim_conda_deactivate_command = (vim.fn.system(activator_command))
+	local vim_conda_deactivate_command = string_.clean_vim_activator(_vim_conda_deactivate_command)
 	vim.cmd(vim_conda_deactivate_command)
 end
 
