@@ -30,8 +30,6 @@ utils.activator_shells = {
 	},
 }
 
--- conda purpose functions
-
 ---@return table
 function utils.get_conda_environments()
 	local shell_output = {}
@@ -65,48 +63,48 @@ function utils.get_activator_command(subcommand, env_name)
 	utils.activator_commands = {
 		posix = {
 			activate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " activate "
+				.. [[ activate ]]
 				.. env_name
-				.. " | sed -e 's/export \\([^=]*\\)=\\(.*\\)/let \\$\\1=\\2/g'"
+				.. [[ | sed -e 's/export \([^=]*\)=\(.*\)/let \$\1=\2/g']]
 				.. " -e 's/^\\([^[:space:]]*\\)=\\(.*\\)/let \\1=\\2/g'"
 			),
 			deactivate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " deactivate "
-				.. "| sed -e 's/export \\([^=]*\\)=\\(.*\\)/let \\$\\1=\\2/g'"
+				.. [[ deactivate]]
+				.. [[ | sed -e 's/export \([^=]*\)=\(.*\)/let \$\1=\2/g']]
 				.. " -e 's/^\\([^[:space:]]*\\)=\\(.*\\)/let \\1=\\2/g'"
-				.. " -e 's/unset \\([^=]*\\)/unlet \\$\\1/g'"
+				.. [[ -e 's/unset \([^=]*\)/unlet \$\1/g']]
 			),
 		},
 		csh = {
 			activate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " activate "
+				.. [[ activate ]]
 				.. env_name
 				.. " | sed -e 's/setenv \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
-				.. " -e 's/set \\([^=]*\\)=\\(.*\\);/let \\1=\\2/g'"
+				.. [[ -e 's/set \([^=]*\)=\(.*\);/let \1=\2/g']]
 			),
 			deactivate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " deactivate "
+				.. [[ deactivate]]
 				.. " | sed -e 's/setenv \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
-				.. " -e 's/set \\([^=]*\\)=\\(.*\\);/let \\1=\\2/g'"
-				.. " -e 's/unsetenv \\([^=]*\\);/unlet \\$\\1/g'"
+				.. [[ -e 's/set \([^=]*\)=\(.*\);/let \1=\2/g']]
+				.. [[ -e 's/unsetenv \([^=]*\);/unlet \$\1/g']]
 			),
 		},
 		xonsh = {
 			activate = ("conda shell." .. utils.running_shell .. " activate " .. env_name .. " | sed -e 's/^/let /g'"),
 			deactivate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " deactivate "
-				.. "| sed -e 's/del/unlet/g'"
-				.. " -e 's/\\\\([^=]*\\\\) = \\\\(.*\\\\)/let \\\\1 = \\\\2/g'"
+				.. [[ deactivate]]
+				.. [[ | sed -e 's/del/unlet/g']]
+				.. [[ -e 's/\\([^=]*\\) = \\(.*\\)/let \\1 = \\2/g']]
 			),
 		},
 		cmd_exe = {
@@ -128,20 +126,20 @@ function utils.get_activator_command(subcommand, env_name)
 		},
 		fish = {
 			activate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " activate "
+				.. [[ activate ]]
 				.. env_name
 				.. " | sed -e 's/set -gx \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
-				.. [[ -e '/PATH=/ s/\\("[^=][\\s]*\\)"/:/g']]
+				.. [[ -e '/PATH=/ s/\("[^=][:space:]*\)"/:/g']]
 			),
 			deactivate = (
-				"conda shell."
+				[[conda shell.]]
 				.. utils.running_shell
-				.. " deactivate "
+				.. [[ deactivate]]
 				.. " | sed -e 's/set -gx \\([^[:space:]]*\\) \\(.*\\);/let \\$\\1=\\2/g'"
 				.. " -e 's/set -e \\([^[:space:]]*\\);/unlet \\$\\1/g'"
-				.. [[ -e '/PATH=/ s/\\("[^=][\\s]*\\)"/:/g']]
+				.. [[ -e '/PATH=/ s/\("[^=][:space:]*\)"/:/g']]
 			),
 		},
 		powershell = {
@@ -156,7 +154,7 @@ function utils.get_activator_command(subcommand, env_name)
 			deactivate = (
 				[[conda shell.]]
 				.. [[powershell]]
-				.. [[ deactivate ]]
+				.. [[ deactivate]]
 				.. [[ | ForEach-Object {$_ -replace '(.*?):(.*)', 'let $$$2' }]]
 				.. [[ | ForEach-Object {$_ -replace '\\', '\\'}"]]
 			),
