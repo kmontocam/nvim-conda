@@ -1,12 +1,12 @@
--- user commands
 local envs = require("conda.envs")
 local utils = require("conda.utils")
 local autocomplete = require("conda.ui.autocomplete")
 local lsps_utils = require("conda.lsps.utils")
 
-if not vim.fn.executable("conda") then
+if vim.fn.executable("conda") == 0 then
 	print(
-		"Conda was not found in your current shell. Please make sure you have it installed and initalized `conda init`"
+		"nvim-conda: the conda command was not found. Please ensure that you"
+			.. " have it installed and referenced in the PATH variable"
 	)
 	return nil
 end
@@ -22,7 +22,8 @@ vim.api.nvim_create_user_command("CondaActivate", function(opts)
 		lsps_utils.restart_lsps()
 	else
 		--TODO: implement UI for choosing environment
-		print("...")
+		print("Please follow the command with an environment name")
+		return nil
 	end
 end, {
 	desc = "Equivalent to `conda activate env_name`. Start environment in Neovim session.",
