@@ -1,6 +1,8 @@
 local envs = require("conda.envs")
 local utils = require("conda.utils")
 local autocomplete = require("conda.ui.autocomplete")
+local window = require("conda.ui.window")
+local set = require("conda.functional.set")
 local lsps_utils = require("conda.lsps.utils")
 
 if vim.fn.executable("conda") == 0 then
@@ -26,10 +28,13 @@ vim.api.nvim_create_user_command("CondaActivate", function(opts)
 			lsps_utils.restart_lsps()
 		end
 	else
-		--TODO: implement UI for choosing environment
-		print("Please follow the command with an environment name")
-		return nil
+		-- no environment given triggers menu
+		window.create_menu(conda_envs, function(_, env_sel)
+			envs.activate(env_sel)
+			lsps_utils.restart_lsps()
+		end)
 	end
+	return nil
 end, {
 	desc = "Equivalent to `conda activate env_name`. Start environment in Neovim session.",
 	nargs = "?",

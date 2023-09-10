@@ -2,10 +2,8 @@ local M = {}
 
 ---@return nil
 M.restart_lsps = function()
-	vim.api.nvim_command("LspStop")
-	vim.defer_fn(function()
-		vim.api.nvim_command("LspStart")
-	end, 500)
+	--TODO: prevent error messages in `create_menu()` buffer with Lspsaga
+	vim.api.nvim_command("LspRestart")
 end
 
 return M
