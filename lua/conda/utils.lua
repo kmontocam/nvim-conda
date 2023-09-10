@@ -43,7 +43,7 @@ function utils.get_conda_environments()
 		on_exit = function()
 			local _conda_envs = find.table_regex_match({}, shell_output, "[\\/]envs[\\/](.*)")
 			table.move(_conda_envs, 1, #_conda_envs, #conda_envs + 1, conda_envs)
-			table.insert(conda_envs, "base")
+			table.insert(conda_envs, 1, "base")
 		end,
 	}):start()
 	return conda_envs
