@@ -18,8 +18,13 @@ local conda_envs = utils.get_conda_environments()
 vim.api.nvim_create_user_command("CondaActivate", function(opts)
 	local env_name = string.len(opts.args) > 0 and opts.args or nil
 	if env_name then
-		envs.activate(env_name, conda_envs)
-		lsps_utils.restart_lsps()
+		if set.table_to_set(conda_envs)[env_name] == nil then
+			print("The environment " .. env_name .. " does not exist")
+			return nil
+		else
+			envs.activate(env_name)
+			lsps_utils.restart_lsps()
+		end
 	else
 		--TODO: implement UI for choosing environment
 		print("Please follow the command with an environment name")
