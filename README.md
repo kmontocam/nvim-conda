@@ -22,7 +22,7 @@ workflow. All powered by Lua.
 session. Switch back and forth between conda environments and keep your LSP
 client up to date with a single command. Enjoy a smooth experience across all
 [conda supported shells](https://docs.conda.io/projects/conda/en/latest/dev-guide/deep-dives/activation.html)
-in Linux, macOS and Windows, with minimal
+in Linux, macOS and Windows with minimal
 [external requirements](#external-requirements).
 
 There is no need to specify the conda `PATH`, nor have an active `python` client
@@ -70,7 +70,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 return {
-	"kmontocam/conda-nvim",
+	"kmontocam/nvim-conda",
 	dependencies = { "nvim-lua/plenary.nvim" },
     }
 ```
@@ -83,6 +83,7 @@ return {
 [comment]: <> (Include :h nvim-conda-commands)
 [comment]: <> (Include `:CondaActivate`)
 
+- `:CondaActivate` - lists conda environments in menu and activates selected
 - `:CondaActivate <env_name>` - activates the given conda environment
 - `:CondaDeactivate` - deactivates the active conda environment
 
