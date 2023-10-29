@@ -29,7 +29,7 @@ vim.api.nvim_create_user_command("CondaActivate", function(opts)
     end
   else
     -- no environment given triggers menu
-    window.create_menu(conda_envs, function(_, env_sel)
+    window.env_activation_menu(conda_envs, function(_, env_sel)
       envs.activate(env_sel)
       lsps_utils.restart_lsps()
     end)
