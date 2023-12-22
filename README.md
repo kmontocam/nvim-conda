@@ -21,7 +21,7 @@ workflow. All powered by Lua.
 [conda](https://docs.conda.io/en/latest/) package manager inside a Neovim
 session. Switch back and forth between conda environments and keep your LSP
 client up to date with a single command. Enjoy a smooth experience across all
-[conda supported shells](https://docs.conda.io/projects/conda/en/latest/dev-guide/deep-dives/activation.html)
+[conda supported shells](https://docs.conda.io/projects/conda/en/latest/dev-guide/deep-dives/activation.html#conda-activate)
 in Linux, macOS and Windows with minimal
 [external requirements](#external-requirements).
 
